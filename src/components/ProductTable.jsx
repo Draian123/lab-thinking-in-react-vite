@@ -1,7 +1,7 @@
 import React from 'react'
 import ProductRow from './ProductRow'
 
-export default function ProductTable({products}) {
+export default function ProductTable({products, search, isInStock}) {
   return (
     
         <table>
@@ -14,7 +14,16 @@ export default function ProductTable({products}) {
                 </td>
             </thead>
             <tbody>
-                {products.map(product =>{
+                {products
+                .filter(product => {
+                if (search === "") return products
+                return product.name.toLowerCase().includes(search.toLowerCase())
+                })
+                .filter(product => {
+                if (isInStock === false) return products
+                return product.inStock === true
+                })
+                .map(product =>{
                     return <ProductRow product={product} key={product.id}/>
                 })}
             </tbody>
